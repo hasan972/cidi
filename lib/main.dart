@@ -24,7 +24,6 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(title: Text('GetX Example')),
       body: Row(
         children: [
-        
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -39,7 +38,7 @@ class HomeView extends StatelessWidget {
                     );
                   },
                 ),
-                SizedBox(width: 10,),
+                SizedBox(width: 10),
                 GetBuilder<CounterController>(
                   id: 'up2',
                   builder: (controller) {
@@ -50,8 +49,7 @@ class HomeView extends StatelessWidget {
                     );
                   },
                 ),
-                 GetX<CounterController>(
-                  
+                GetX<CounterController>(
                   builder: (controller) {
                     print('Third');
                     return Text(
@@ -59,6 +57,12 @@ class HomeView extends StatelessWidget {
                       style: TextStyle(fontSize: 40),
                     );
                   },
+                ),
+                Obx(
+                  (() => Text(
+                    depandency.count4.toString(),
+                    style: const TextStyle(fontSize: 30),
+                  )),
                 ),
               ],
             ),
@@ -74,9 +78,13 @@ class HomeView extends StatelessWidget {
                 onPressed: depandency.increment1,
                 child: Text('Increment 2'),
               ),
-               ElevatedButton(
+              ElevatedButton(
                 onPressed: depandency.increment3,
                 child: Text('Increment 3'),
+              ),
+              ElevatedButton(
+                onPressed: depandency.increment4,
+                child: Text('Increment 4'),
               ),
             ],
           ),

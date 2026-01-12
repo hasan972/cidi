@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class CounterController extends GetxController {
+class HomeController extends GetxController {
   var count = 0;
   var count1 = 0;
   var count3 = 0.obs;

@@ -1,4 +1,5 @@
-import 'package:cidi/app/modules/controller/home_controller.dart';
+
+import 'package:cidi/app/modules/home/controller/home_controller.dart';
 import 'package:get/get.dart';
 
 class HomeBinding extends Bindings {

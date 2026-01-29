@@ -1,9 +1,17 @@
-import 'package:cidi/app/modules/view/home_view.dart';
+
+import 'package:cidi/app/data/models/todo_model.dart';
+import 'package:cidi/app/routes/app_pages.dart';
 import 'package:cidi/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
+void main() async{
+   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(TodoAdapter());
+  await Hive.openBox<Todo>('todoBox');
   runApp(const MyApp());
 }
 
@@ -13,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialRoute: AppRoutes.initialRoute,
-      getPages: AppRoutes.routs,
+      getPages: AppPages.routes,
     );
   }
 }

@@ -1,34 +1,63 @@
-import 'package:cidi/app/modules/todo/controller/todo_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../controller/todo_controller.dart';
 
-
-class TodoPage extends StatelessWidget {
-  final controller = Get.find<TodoController>();
+class TodoPage extends GetView<TodoController> {
+  //final controller = Get.find<TodoController>();
   final textCtrl = TextEditingController();
+  final searchCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Hive CRUD')),
+      appBar: AppBar(
+        title: Obx(() => controller.isSearching.value
+            ? TextField(
+                controller: searchCtrl,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: 'Search todo...',
+                  border: InputBorder.none,
+                ),
+                onChanged: controller.searchTodo,
+              )
+            : const Text('Hive CRUD')),
+        actions: [
+          Obx(() => IconButton(
+                icon: Icon(controller.isSearching.value
+                    ? Icons.close
+                    : Icons.search),
+                onPressed: () {
+                  controller.isSearching.toggle();
+                  searchCtrl.clear();
+                  controller.searchTodo('');
+                },
+              ))
+        ],
+      ),
+
       body: Obx(() => ListView.builder(
-            itemCount: controller.todos.length,
+            itemCount: controller.filteredTodos.length,
             itemBuilder: (context, index) {
-              final todo = controller.todos[index];
+              final todo = controller.filteredTodos[index];
+
               return ListTile(
                 title: Text(
                   todo.title,
                   style: TextStyle(
-                      decoration:
-                          todo.isDone ? TextDecoration.lineThrough : null),
+                    decoration:
+                        todo.isDone ? TextDecoration.lineThrough : null,
+                  ),
                 ),
                 leading: Checkbox(
                   value: todo.isDone,
-                  onChanged: (_) => controller.toggleTodoStatus(index),
+                  onChanged: (_) =>
+                      controller.toggleTodoStatus(todo),
                 ),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete),
-                  onPressed: () => controller.deleteTodo(index),
+                  onPressed: () =>
+                      controller.deleteTodo(todo),
                 ),
                 onTap: () {
                   textCtrl.text = todo.title;
@@ -36,7 +65,7 @@ class TodoPage extends StatelessWidget {
                     title: "Update Todo",
                     content: TextField(controller: textCtrl),
                     onConfirm: () {
-                      controller.updateTodo(index, textCtrl.text);
+                      controller.updateTodo(todo, textCtrl.text);
                       Get.back();
                     },
                   );
@@ -44,6 +73,7 @@ class TodoPage extends StatelessWidget {
               );
             },
           )),
+
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {

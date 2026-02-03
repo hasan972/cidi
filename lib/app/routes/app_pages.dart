@@ -11,16 +11,16 @@ class AppPages {
     GetPage(
       name: AppRoutes.initialRoute,
       page: () {
-        return HomeView();
-      },
-      binding: HomeBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.todo,
-      page: () {
         return TodoPage();
       },
       binding: TodoBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.home,
+      page: () {
+        return HomeView();
+      },
+      binding: HomeBinding(),
     ),
   ];
 }
